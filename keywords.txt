@@ -1,0 +1,46 @@
+#######################################
+# Syntax Coloring Map for Arduino_BME690
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Arduino_BME690	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+end	KEYWORD2
+read	KEYWORD2
+readTemperature	KEYWORD2
+readHumidity	KEYWORD2
+readPressure	KEYWORD2
+readGas	KEYWORD2
+setGasHeater	KEYWORD2
+setGasHeaterOff	KEYWORD2
+setOversampling	KEYWORD2
+setIIRFilter	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+BME690_DEFAULT_ADDRESS	LITERAL1
+BME690_SECONDARY_ADDRESS	LITERAL1
+BME690_OS_NONE	LITERAL1
+BME690_OS_1X	LITERAL1
+BME690_OS_2X	LITERAL1
+BME690_OS_4X	LITERAL1
+BME690_OS_8X	LITERAL1
+BME690_OS_16X	LITERAL1
+BME690_FILTER_OFF	LITERAL1
+BME690_FILTER_SIZE_1	LITERAL1
+BME690_FILTER_SIZE_3	LITERAL1
+BME690_FILTER_SIZE_7	LITERAL1
+BME690_FILTER_SIZE_15	LITERAL1
+BME690_FILTER_SIZE_31	LITERAL1
+BME690_FILTER_SIZE_63	LITERAL1
+BME690_FILTER_SIZE_127	LITERAL1
