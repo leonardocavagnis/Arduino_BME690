@@ -2,7 +2,7 @@
 
 The Arduino BME690 library is a C++ library that lets you read temperature, humidity, barometric pressure and gas resistance from a [Bosch Sensortec BME690](https://www.bosch-sensortec.com/products/environmental-sensors/gas-sensors/bme690/) sensor connected over I2C.
 
-The BME690 combines temperature, humidity and pressure sensing with a MOX gas sensor that reacts to Volatile Organic Compounds (VOCs) and other gases. This library gives you direct access to all four measurements through a small, classic Arduino-style API: an `Arduino_BME690` object with `begin()`, `read()` and simple getters, similar in spirit to other Arduino environmental sensor libraries such as [Arduino_HS300x](https://github.com/arduino-libraries/Arduino_HS300x) and [Arduino_LPS22HB](https://github.com/arduino-libraries/Arduino_LPS22HB).
+The BME690 combines temperature, humidity and pressure sensing with a MOX gas sensor that reacts to Volatile Organic Compounds (VOCs) and other gases.
 
 Internally, the library talks to the sensor through Bosch Sensortec's own low-level `bme69x` driver (vendored in [`src/bme69x/`](../src/bme69x/)), which handles calibration, compensation and register-level communication. The `Arduino_BME690` class on top of it takes care of I2C wiring, sensible default configuration and forced-mode measurement timing, so most sketches only need `begin()` and `read()`.
 
@@ -58,7 +58,7 @@ void loop() {
 }
 ```
 
-The gas resistance is a raw signal, not a calibrated air-quality index: higher values generally indicate cleaner air, lower values indicate the presence of VOCs or other gases. If you need a fused Air Quality Index (IAQ), CO2-equivalent or VOC-equivalent estimate instead, look for a library built on top of Bosch's BSEC algorithm.
+The gas resistance is a raw signal, not a calibrated air-quality index: higher values generally indicate cleaner air, lower values indicate the presence of VOCs or other gases. If you need a fused Air Quality Index (IAQ), CO2-equivalent or VOC-equivalent estimate instead, look for a library built on top of [Bosch's BSEC algorithm](https://www.bosch-sensortec.com/en/software-tools/software/bme680-software-bsec).
 
 ## Examples
 
