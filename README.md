@@ -1,4 +1,4 @@
-# 🌡️ Arduino BME690 Library
+# 💨 Arduino BME690 Library
 
 The Arduino BME690 Library allows you to read temperature, humidity, barometric pressure and gas resistance from a [Bosch Sensortec BME690](https://www.bosch-sensortec.com/products/environmental-sensors/gas-sensors/bme690/) sensor over Wire/I2C.
 
