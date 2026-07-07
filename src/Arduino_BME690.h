@@ -34,29 +34,37 @@
 #include "bme69x/bme69x.h"
 
 // I2C addresses (SDO pin low/high)
-#define BME690_DEFAULT_ADDRESS    BME69X_I2C_ADDR_LOW  // 0x76
+#define BME690_DEFAULT_ADDRESS    BME69X_I2C_ADDR_LOW   // 0x76
 #define BME690_SECONDARY_ADDRESS  BME69X_I2C_ADDR_HIGH  // 0x77
 
-// Oversampling settings, for use with setOversampling()
+// Oversampling settings, for use with setOversampling().
+// Oversampling repeats a measurement N times internally and averages the
+// result: higher values trade a longer measurement time for less noise
+// and finer resolution. NONE disables that particular measurement entirely
+// (its reading becomes invalid).
 enum {
-  BME690_OS_NONE = BME69X_OS_NONE,
-  BME690_OS_1X   = BME69X_OS_1X,
+  BME690_OS_NONE = BME69X_OS_NONE,  // measurement disabled
+  BME690_OS_1X   = BME69X_OS_1X,    // no oversampling (fastest, noisiest)
   BME690_OS_2X   = BME69X_OS_2X,
   BME690_OS_4X   = BME69X_OS_4X,
   BME690_OS_8X   = BME69X_OS_8X,
-  BME690_OS_16X  = BME69X_OS_16X
+  BME690_OS_16X  = BME69X_OS_16X    // maximum oversampling (slowest, most stable)
 };
 
-// IIR filter settings, for use with setIIRFilter()
+// IIR filter settings, for use with setIIRFilter().
+// The IIR filter smooths temperature and pressure readings over successive
+// measurements, damping fast/short-lived fluctuations (e.g. a door opening,
+// a gust of air). Larger sizes filter more aggressively but make the
+// reading slower to react to real changes; OFF applies no filtering.
 enum {
-  BME690_FILTER_OFF      = BME69X_FILTER_OFF,
+  BME690_FILTER_OFF      = BME69X_FILTER_OFF,      // no filtering, raw reading
   BME690_FILTER_SIZE_1   = BME69X_FILTER_SIZE_1,
   BME690_FILTER_SIZE_3   = BME69X_FILTER_SIZE_3,
   BME690_FILTER_SIZE_7   = BME69X_FILTER_SIZE_7,
   BME690_FILTER_SIZE_15  = BME69X_FILTER_SIZE_15,
   BME690_FILTER_SIZE_31  = BME69X_FILTER_SIZE_31,
   BME690_FILTER_SIZE_63  = BME69X_FILTER_SIZE_63,
-  BME690_FILTER_SIZE_127 = BME69X_FILTER_SIZE_127
+  BME690_FILTER_SIZE_127 = BME69X_FILTER_SIZE_127  // strongest filtering, slowest response
 };
 
 class Arduino_BME690 {
@@ -80,10 +88,28 @@ public:
   float readPressure();     // hPa
   float readGas();          // gas resistance, in Ohms
 
-  // Optional advanced configuration, call before read()
+  // --- Optional advanced configuration, call before read() ---
+
+  // Set how many times each measurement is internally repeated and averaged.
+  // Higher oversampling reduces noise at the cost of a longer measurement.
+  // temperature, pressure, humidity: one of the BME690_OS_* constants above.
   void setOversampling(uint8_t temperature, uint8_t pressure, uint8_t humidity);
+
+  // Set the IIR filter coefficient applied to temperature and pressure, to
+  // smooth out short-term fluctuations across successive measurements.
+  // filter: one of the BME690_FILTER_* constants above.
   void setIIRFilter(uint8_t filter);
-  void setGasHeater(uint16_t temperature, uint16_t duration);  // deg C, ms
+
+  // Configure the gas sensor's heater plate: it must reach a stable target
+  // temperature for the gas resistance reading to be meaningful.
+  // temperature: heater plate target temperature, in degrees Celsius
+  //              (typically 200-400 degC).
+  // duration: how long to keep the plate at that temperature before
+  //           sampling, in milliseconds (typically 100-200 ms).
+  void setGasHeater(uint16_t temperature, uint16_t duration);
+
+  // Turn the gas heater plate off. Temperature/humidity/pressure readings
+  // stay available, but the gas resistance reading is no longer meaningful.
   void setGasHeaterOff();
 
 private:
